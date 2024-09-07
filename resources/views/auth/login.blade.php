@@ -5,40 +5,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">Login</div>
-                    <div class="card-body">
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-                        <form method="POST" action="{{ route('login') }}">
-                            @csrf
-                            <div class="form-group">
-                                <label for="email">Email address</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" class="form-control" id="password" name="password" required>
-                            </div>
+    <div class="container custom-container">
+        <div class="left-panel">
+            <img src="path_to_logo.png" alt="College Logo">
+            <h1>ClaSS Monitoring</h1>
+            <p>for the College of Computer Studies at Dominican College of Tarlac</p>
+        </div>
+        <div class="right-panel">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h2>USER LOGIN</h2>
+                    <hr>
+                </div>
+                <div class="card-body">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <form method="POST" action="{{ route('login') }}">
+                        @csrf
+                        <div class="form-group">
+                            <label for="username">email</label>
+                            <input type="text" class="form-control" id="username" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                            <label class="form-check-label" for="remember">Remember me</label>
+                        </div>
+                        <div class="form-group text-right">
+                            <a href="{{ route('password.request') }}" class="btn btn-link">Forgot Password?</a>
+                        </div>
+                        <div class="form-group text-center">
                             <button type="submit" class="btn btn-primary">Login</button>
-                            <a href="{{ route('password.request') }}" class="btn btn-link">Forgot Your Password?</a>
-                        </form>
-                    </div>
+                            {{-- <a href="{{ route('register') }}" class="btn btn-secondary">Sign up</a> --}}
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+    <script src="js/main.js"></script>
 </body>
 </html>
