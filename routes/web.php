@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 
 /*
@@ -66,10 +67,11 @@ Route::middleware(['auth'])->group(function () {
     // Other authenticated routes...
 
     Route::get('/students', [StudentController::class, 'index'])->name('students.index');
-    Route::post('/students', [StudentController::class, 'store'])->name('students.store');
+    route::get('students/create', [StudentController::class, 'create'])->name('students.create');
+    Route::post('students/store', [StudentController::class, 'store'])->name('students.store');
     Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
-
-});
+    route::post('/students/upload-csv', [StudentController::class, 'uploadCSV'])->name('students.uploadCSV');});
+    Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
 
 
 // Forgot Password Routes

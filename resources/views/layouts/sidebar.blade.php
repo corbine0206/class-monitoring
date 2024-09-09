@@ -5,7 +5,7 @@
         <a class="nav-link collapsed" data-bs-target="#subject-section-nav" data-bs-toggle="collapse" href="#">
             <i class="bi bi-book"></i><span>Subjects, Sections & Students</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
-        <ul id="subject-section-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        <ul id="subject-section-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
             <li>
                 <a class="nav-link collapsed" href="{{ route('subjects.index') }}">
                     <i class="bi bi-card-text"></i><span>Subjects</span>
@@ -22,6 +22,15 @@
                 </a>
             </li>
         </ul>
+    </li>
+    @endif
+
+    <!-- User Management (only for admin) -->
+    @if(auth()->check() && auth()->user()->user_type === 'admin')
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ route('users.index') }}">
+            <i class="bi bi-people-fill"></i><span>User Management</span>
+        </a>
     </li>
     @endif
 </aside>

@@ -6,18 +6,12 @@ function showEditModal(student) {
     document.getElementById('edit_date_of_birth').value = student.date_of_birth;
     document.getElementById('edit_gender').value = student.gender;
     document.getElementById('edit_course').value = student.course;
+    document.getElementById('edit_section_id').value = student.section_id; // Set section_id
+    document.getElementById('edit_subject_id').value = student.subject_id; // Set subject_id
 
     const form = document.getElementById('editForm');
     form.action = `/students/${student.id}`;
 
     const editModal = new bootstrap.Modal(document.getElementById('editStudentModal'));
     editModal.show();
-}
-
-function showDeleteModal(sectionId) {
-    const form = document.getElementById('deleteForm');
-    form.action = `/sections/${sectionId}`;
-
-    const deleteModal = new bootstrap.Modal(document.getElementById('deleteSectionModal'));
-    deleteModal.show();
 }

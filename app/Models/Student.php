@@ -18,10 +18,15 @@ class Student extends Model
         'gender',
         'course',
         'user_id',
+        'section_id',
+        'subject_id',
     ];
     
-    public function student()
+    public $timestamps = true;
+
+    public function user()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(User::class);
     }
+
 }
