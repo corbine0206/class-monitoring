@@ -11,7 +11,7 @@ use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-
+use App\Http\Controllers\ClassCardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,13 +66,17 @@ Route::middleware(['auth'])->group(function () {
 
     // Other authenticated routes...
 
-    Route::get('/students', [StudentController::class, 'index'])->name('students.index');
+    route::get('/students', [StudentController::class, 'index'])->name('students.index');
     route::get('students/create', [StudentController::class, 'create'])->name('students.create');
     Route::post('students/store', [StudentController::class, 'store'])->name('students.store');
     Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
     route::post('/students/upload-csv', [StudentController::class, 'uploadCSV'])->name('students.uploadCSV');});
     Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
 
+
+    Route::get('/class-card', [ClassCardController::class, 'index'])->name('class-card.index');
+    route::put('/class-card/update/{student_id}', [ClassCardController::class, 'update'])->name('class-card.update');    
+    Route::get('/class-card/filter-students', [ClassCardController::class, 'filterStudents'])->name('class-card.filter-students');
 
 // Forgot Password Routes
 Route::get('forgot-password', 'App\Http\Controllers\Auth\ForgotPasswordController@showForgotPasswordForm')->name('password.request');

@@ -23,6 +23,13 @@
             </li>
         </ul>
     </li>
+
+    <!-- Class Card Nav (only for teacher) -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ route('class-card.index') }}">
+            <i class="bi bi-journal"></i><span>Class Cards</span>
+        </a>
+    </li>
     @endif
 
     <!-- User Management (only for admin) -->

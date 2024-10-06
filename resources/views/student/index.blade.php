@@ -27,6 +27,35 @@
                             Upload CSV
                         </button>
 
+                        <!-- Dropdowns for filtering -->
+                        <form method="GET" action="{{ route('students.index') }}">
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <select class="form-control" name="subject_id">
+                                        <option value="">All</option>
+                                        @foreach($subjects as $subject)
+                                            <option value="{{ $subject->id }}" {{ request('subject_id') == $subject->id ? 'selected' : '' }}>
+                                                {{ $subject->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <select class="form-control" name="section_id">
+                                        <option value="">All</option>
+                                        @foreach($sections as $section)
+                                            <option value="{{ $section->id }}" {{ request('section_id') == $section->id ? 'selected' : '' }}>
+                                                {{ $section->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-primary">Filter</button>
+                                </div>
+                            </div>
+                        </form>
+
                         <table class="table">
                             <thead>
                                 <tr>
@@ -66,6 +95,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Create Student Modal -->
     <div class="modal fade" id="createStudentModal" tabindex="-1" aria-labelledby="createStudentModalLabel" aria-hidden="true">

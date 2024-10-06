@@ -29,4 +29,13 @@ class Student extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function section()
+    {
+        return $this->belongsTo(Section::class);
+    }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
 }

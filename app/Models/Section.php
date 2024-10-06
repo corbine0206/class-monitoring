@@ -15,8 +15,13 @@ class Section extends Model
         'user_id',
     ];
 
-    public function subjects()
+    public function students()
     {
-        return $this->hasMany(Subject::class);
+        return $this->hasMany(Student::class);
+    }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
     }
 }
