@@ -26,6 +26,7 @@
                         <button type="button" class="btn btn-secondary mb-3" data-bs-toggle="modal" data-bs-target="#uploadCSVModal">
                             Upload CSV
                         </button>
+                        <a href="{{ route('students.export') }}" class="btn btn-success">Export Students</a>
 
                         <!-- Dropdowns for filtering -->
                         <form method="GET" action="{{ route('students.index') }}">

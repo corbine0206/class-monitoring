@@ -12,6 +12,9 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ClassCardController;
+use App\Exports\StudentsExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -73,6 +76,11 @@ Route::middleware(['auth'])->group(function () {
     route::post('/students/upload-csv', [StudentController::class, 'uploadCSV'])->name('students.uploadCSV');});
     Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
 
+    Route::get('export-students', function () {
+        $teacherId = auth()->user()->id;
+        return Excel::download(new StudentsExport($teacherId), 'students.xlsx');
+    })->name('students.export');
+    
 
     Route::get('/class-card', [ClassCardController::class, 'index'])->name('class-card.index');
     route::put('/class-card/update/{student_id}', [ClassCardController::class, 'update'])->name('class-card.update');    

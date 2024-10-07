@@ -22,15 +22,15 @@ class ClassCardController extends Controller
             $query->where('user_id', $teacherId);
         })->orderBy('id')->get();
 
-        // Check if there are any students associated with the teacher
-        $sections = Section::where('user_id', $teacherId)->orderBy('id')->get();
-        $subjects = Subject::where('user_id', $teacherId)->orderBy('id')->get();
-        // If no students are found, return a message to the view
+        // If no students are found, return an empty collection to avoid errors
         if ($students->isEmpty()) {
-            return view('class_card.index')->with('message', 'There are no students yet.');
+            return view('class_card.index', [
+                'students' => collect(), // Pass an empty collection
+                'message' => 'There are no students yet.'
+            ]);
         }
 
-        // Retrieve the student_id from the request, if not provided get the first student's ID
+        // Retrieve the student_id from the request, if not provided, get the first student's ID
         $student_id = $request->input('student_id') ?? $students->first()->id;
 
         // Fetch the student, ensuring the student belongs to the authenticated teacher
@@ -47,9 +47,10 @@ class ClassCardController extends Controller
             ? Score::where('class_card_id', $classCard->id)->get()->groupBy('term') 
             : collect(); // Return an empty collection if no class card found
 
-        $scores = $scores->put('prelim', $scores->get('prelim', collect())); // Initialize 'prelim' if not exists
-        $scores = $scores->put('midterm', $scores->get('midterm', collect())); // Initialize 'midterm' if not exists
-        $scores = $scores->put('finals', $scores->get('finals', collect())); // Initialize 'finals' if not exists
+        // Initialize the 'prelim', 'midterm', and 'finals' terms
+        $scores = $scores->put('prelim', $scores->get('prelim', collect())); 
+        $scores = $scores->put('midterm', $scores->get('midterm', collect())); 
+        $scores = $scores->put('finals', $scores->get('finals', collect())); 
 
         // Get all student IDs that belong to the teacher
         $studentIds = $students->pluck('id')->toArray();
@@ -60,8 +61,9 @@ class ClassCardController extends Controller
         $nextStudentId = $currentIndex < count($studentIds) - 1 ? $studentIds[$currentIndex + 1] : null;
 
         // Pass data to the view
-        return view('class_card.index', compact('students', 'sections', 'subjects', 'student', 'classCard', 'scores', 'prevStudentId', 'nextStudentId'));
+        return view('class_card.index', compact('students', 'student', 'classCard', 'scores', 'prevStudentId', 'nextStudentId'));
     }
+
 
 
     public function update(Request $request, $student_id)

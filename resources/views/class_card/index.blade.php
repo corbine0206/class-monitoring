@@ -27,11 +27,13 @@
                     <label for="subject_id">Select Subject:</label>
                     <select name="subject_id" id="subject_id" class="form-control" onchange="filterStudents()">
                         <option value="">All Subjects</option>
-                        @foreach($subjects as $subject)
-                            <option value="{{ $subject->id }}" {{ request('subject_id') == $subject->id ? 'selected' : '' }}>
-                                {{ $subject->name }}
-                            </option>
-                        @endforeach
+                        @if(isset($subjects))
+                            @foreach($subjects as $subject)
+                                <option value="{{ $subject->id }}" {{ request('subject_id') == $subject->id ? 'selected' : '' }}>
+                                    {{ $subject->name }}
+                                </option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
                 
@@ -39,11 +41,13 @@
                     <label for="section_id">Select Section:</label>
                     <select name="section_id" id="section_id" class="form-control" onchange="filterStudents()">
                         <option value="">All Sections</option>
-                        @foreach($sections as $section)
-                            <option value="{{ $section->id }}" {{ request('section_id') == $section->id ? 'selected' : '' }}>
-                                {{ $section->name }}
-                            </option>
-                        @endforeach
+                        @if(isset($sections))
+                            @foreach($sections as $section)
+                                <option value="{{ $section->id }}" {{ request('section_id') == $section->id ? 'selected' : '' }}>
+                                    {{ $section->name }}
+                                </option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
                 
