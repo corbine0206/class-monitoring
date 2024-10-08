@@ -331,6 +331,35 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Major Exam Section -->
+                    <div class="card col-md-3">
+                        <div class="row mb-4">
+                            <h5>Major Exams</h5>
+                            <table class="table table-bordered text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Exam</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Prelims</td>
+                                        <td><input type="text" name="prelims_exam" class="form-control" placeholder="Enter score"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Midterms</td>
+                                        <td><input type="text" name="midterms_exam" class="form-control" placeholder="Enter score"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Finals</td>
+                                        <td><input type="text" name="finals_exam" class="form-control" placeholder="Enter score"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <button class="btn btn-primary w-100">Calculate</button>
+                        </div>
+                    </div>
                 </div>
                 <!-- Navigation Arrows -->
                 <div class="row mt-4 text-center">

@@ -12,7 +12,10 @@
 <body>
     <div class="container custom-container">
         <div class="left-panel">
-            <img src="path_to_logo.png" alt="College Logo">
+            <div class="row">
+                <div class="col-md-6"><img src="assets/img/dct.jpeg" alt="College Logo"></div>
+                <div class="col-md-6"><img src="assets/img/css.jpeg" alt="College Logo"></div>
+            </div>
             <h1>ClaSS Monitoring</h1>
             <p>for the College of Computer Studies at Dominican College of Tarlac</p>
         </div>
