@@ -39,5 +39,13 @@
             <i class="bi bi-people-fill"></i><span>User Management</span>
         </a>
     </li>
+
+    <!-- User Registration (only for admin) -->
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ route('register') }}">
+            <i class="bi bi-person-plus-fill"></i><span>Register New User</span>
+        </a>
+    </li>
     @endif
+
 </aside>

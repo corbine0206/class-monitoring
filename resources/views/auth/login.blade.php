@@ -12,7 +12,12 @@
 <body>
     <div class="container custom-container">
         <div class="left-panel">
-            <img src="path_to_logo.png" alt="College Logo">
+            <div class="row">
+                <div class="col-md-6"><img src="assets/img/dct.jpeg" alt="College Logo"></div>
+                <div class="col-md-6"><img src="assets/img/css.jpeg" alt="College Logo"></div>
+            </div>
+            
+            
             <h1>ClaSS Monitoring</h1>
             <p>for the College of Computer Studies at Dominican College of Tarlac</p>
         </div>
@@ -41,10 +46,6 @@
                         <div class="form-group">
                             <label for="password">Password</label>
                             <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="remember" name="remember">
-                            <label class="form-check-label" for="remember">Remember me</label>
                         </div>
                         <div class="form-group text-right">
                             <a href="{{ route('password.request') }}" class="btn btn-link">Forgot Password?</a>

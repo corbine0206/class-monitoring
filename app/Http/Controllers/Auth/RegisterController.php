@@ -63,6 +63,6 @@ class RegisterController extends Controller
             'user_type' => $request->user_type // Assign user_type field
         ]);
 
-        return redirect()->route('users.register-user')->with('success', 'Registration successful!');
+        return redirect()->route('register')->with('success', 'Registration successful!');
     }
 }
