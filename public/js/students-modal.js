@@ -15,3 +15,14 @@ function showEditModal(student) {
     const editModal = new bootstrap.Modal(document.getElementById('editStudentModal'));
     editModal.show();
 }
+
+function showDeleteModal(studentId) {
+    // Get the delete form and set the action to the correct URL
+    const deleteForm = document.getElementById('deleteForm');
+    deleteForm.action = `/students/${studentId}`;
+    
+    // Show the modal
+    const deleteModal = new bootstrap.Modal(document.getElementById('deleteStudentModal'));
+    deleteModal.show();
+}
+

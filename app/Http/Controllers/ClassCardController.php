@@ -38,7 +38,8 @@ class ClassCardController extends Controller
         if (!$student) {
             return redirect()->route('class-card.index')->with('error', 'Student not found.');
         }
-
+        $subjects = Subject::where('user_id', $teacherId)->get();
+        $sections = Section::where('user_id', $teacherId)->get();
         // Fetch the class card for the student
         $classCard = ClassCard::where('student_id', $student->id)->first();
 
@@ -59,88 +60,38 @@ class ClassCardController extends Controller
         $currentIndex = array_search($student_id, $studentIds);
         $prevStudentId = $currentIndex > 0 ? $studentIds[$currentIndex - 1] : null;
         $nextStudentId = $currentIndex < count($studentIds) - 1 ? $studentIds[$currentIndex + 1] : null;
-
+        // return $scores;
         // Pass data to the view
-        return view('class_card.index', compact('students', 'student', 'classCard', 'scores', 'prevStudentId', 'nextStudentId'));
+        return view('class_card.index', compact('students', 'subjects', 'sections', 'student', 'classCard', 'scores', 'prevStudentId', 'nextStudentId'));
     }
 
-
-
-    public function update(Request $request, $student_id)
+    public function performanceTaskStore(Request $request)
     {
-        // Validate the incoming request data
-        $validated = $request->validate([
-            // Use 'array' validation to handle multiple inputs
-            'prelim_performance_task.*' => 'nullable|integer',
-            'prelim_quiz.*' => 'nullable|integer',
-            'prelim_recitation.*' => 'nullable|integer',
-            'midterm_performance_task.*' => 'nullable|integer',
-            'midterm_quiz.*' => 'nullable|integer',
-            'midterm_recitation.*' => 'nullable|integer',
-            'finals_performance_task.*' => 'nullable|integer',
-            'finals_quiz.*' => 'nullable|integer',
-            'finals_recitation.*' => 'nullable|integer',
-            'prelims_exam' => 'nullable|integer',
-            'midterms_exam' => 'nullable|integer',
-            'finals_exam' => 'nullable|integer',
+        $request->validate([
+            'class_card_id' => 'required|exists:class_cards,id', // Validate that the class card exists
+            'student_id' => 'required|exists:students,id', // Validate that the student exists
+            'score' => 'required|numeric|min:0|max:100', // Score validation
+            'over_score' => 'required|numeric|min:0', // Over score validation
+            'term' => 'required|in:1,2,3', // Only allow specified terms
         ]);
 
-        // Retrieve the class card for the student
-        $classCard = ClassCard::where('student_id', $student_id)->first();
+        // Create a new score record
+        $score = new Score();
+        $score->class_card_id = $request->class_card_id;
+        $score->student_id = $request->student_id;
+        $score->score = $request->score;
+        $score->over_score = $request->over_score; // Add over_score to the model
+        $score->type = $request->type_activity; // Set type for performance task
+        $score->term = $request->term; // Set the term
 
-        if (!$classCard) {
-            return redirect()->route('class-card.index', ['student_id' => $student_id])
-                            ->withErrors('Class card not found.');
+        // Save the score and check for success
+        if ($score->save()) {
+            return redirect()->back()->with('success', 'Performance task saved successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Failed to save performance task.');
         }
-
-        // Define terms and types for lookup
-        $terms = ['prelim', 'midterm', 'finals'];
-        $types = ['performance_task', 'quiz', 'recitation'];
-
-        // Update or create scores for each term and type
-        foreach ($terms as $term) {
-            foreach ($types as $type) {
-                // Handle multiple inputs
-                $scores = $request->input("{$term}_{$type}");
-
-                if (is_array($scores)) {
-                    foreach ($scores as $score) {
-                        if (!is_null($score)) {
-                            Score::updateOrCreate(
-                                [
-                                    'class_card_id' => $classCard->id,
-                                    'student_id' => $student_id,
-                                    'type' => array_search($type, $types) + 1,
-                                    'term' => array_search($term, $terms) + 1
-                                ],
-                                ['score' => $score]
-                            );
-                        }
-                    }
-                }
-            }
-        }
-
-        // Update or create exam scores
-        foreach (['prelims_exam', 'midterms_exam', 'finals_exam'] as $exam) {
-            $score = $request->input($exam);
-
-            if (!is_null($score)) {
-                Score::updateOrCreate(
-                    [
-                        'class_card_id' => $classCard->id,
-                        'student_id' => $student_id,
-                        'type' => array_search($exam, ['prelims_exam', 'midterms_exam', 'finals_exam']) + 4,
-                        'term' => array_search(explode('_', $exam)[0], ['prelims', 'midterms', 'finals']) + 1
-                    ],
-                    ['score' => $score]
-                );
-            }
-        }
-
-        return redirect()->route('class-card.index', ['student_id' => $student_id])
-                        ->with('success', 'Scores updated successfully.');
     }
+
 
     public function filterStudents(Request $request)
     {

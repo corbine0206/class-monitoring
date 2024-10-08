@@ -14,6 +14,7 @@ class Score extends Model
         'student_id',
         'type',
         'score',
+        'over_score',
         'term',
     ];
 
@@ -35,7 +36,9 @@ class Score extends Model
         $types = [
             1 => 'performance_task',
             2 => 'quiz',
-            3 => 'recitation'
+            3 => 'recitation',
+            4 => 'lec',
+            5 => 'lab'
         ];
 
         return $types[$value] ?? 'unknown';

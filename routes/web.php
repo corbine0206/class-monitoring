@@ -83,8 +83,9 @@ Route::middleware(['auth'])->group(function () {
     
 
     Route::get('/class-card', [ClassCardController::class, 'index'])->name('class-card.index');
-    route::put('/class-card/update/{student_id}', [ClassCardController::class, 'update'])->name('class-card.update');    
     Route::get('/class-card/filter-students', [ClassCardController::class, 'filterStudents'])->name('class-card.filter-students');
+    Route::post('/class-card/performance-task/store', [ClassCardController::class, 'performanceTaskStore'])->name('class-card.performance-task.store');
+
 
 // Forgot Password Routes
 Route::get('forgot-password', 'App\Http\Controllers\Auth\ForgotPasswordController@showForgotPasswordForm')->name('password.request');

@@ -21,3 +21,11 @@ function filterStudents() {
         }
     });
 }
+
+
+function openPerformanceModal(classCardId, studentId, term) {
+    $('#class_card_id').val(classCardId);
+    $('#student_id').val(studentId);
+    $('#term').val(term); // Set the term input field value
+    $('#performanceModal').modal('show');
+}
