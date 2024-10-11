@@ -575,7 +575,14 @@
                                 </div>
                             </div>
                         </div>
-
+                        
+                    </div>
+                </div>
+                <!-- Navigation Arrows -->
+                <div class="row mt-4 text-center">
+                    <div class="col">
+                        <a href="{{ route('class-card.index', ['student_id' => $prevStudentId]) }}" class="btn btn-secondary">&lt;</a>
+                        <a href="{{ route('class-card.index', ['student_id' => $nextStudentId]) }}" class="btn btn-secondary">&gt;</a>
                     </div>
                 </div>
             </div>

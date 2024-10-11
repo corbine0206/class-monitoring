@@ -30,6 +30,12 @@
             <i class="bi bi-journal"></i><span>Class Cards</span>
         </a>
     </li>
+
+    <li class="nav-item">
+        <a class="nav-link collapsed" href="{{ route('attendance.index') }}">
+            <i class="bi bi-journal"></i><span>Attendance</span>
+        </a>
+    </li>
     @endif
 
     <!-- User Management (only for admin) -->

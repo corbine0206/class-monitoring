@@ -12,6 +12,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ClassCardController;
+use App\Http\Controllers\AttendanceController;
 use App\Exports\StudentsExport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -85,6 +86,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/class-card', [ClassCardController::class, 'index'])->name('class-card.index');
     Route::get('/class-card/filter-students', [ClassCardController::class, 'filterStudents'])->name('class-card.filter-students');
     Route::post('/class-card/performance-task/store', [ClassCardController::class, 'performanceTaskStore'])->name('class-card.performance-task.store');
+
+
+    Route::get('/attendance', [AttendanceController::class, 'index'])->name('attendance.index');
+    Route::post('/attendance/store', [AttendanceController::class, 'store'])->name('attendance.store');
 
 
 // Forgot Password Routes
