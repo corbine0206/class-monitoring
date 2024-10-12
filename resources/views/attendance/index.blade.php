@@ -40,117 +40,132 @@
                 </div>
             </div>
         </div>
-        <h4>Lecture Attendance</h4>
 
-        <table class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Days</th>
-                    @for ($i = 1; $i <= 18; $i++)
-                        <th>{{ $i }}</th>
-                    @endfor
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (['Mon' => 1, 'Tue' => 2, 'Wed' => 3, 'Thu' => 4, 'Fri' => 5, 'Sat' => 6] as $day => $dayNum)
-                <tr>
-                    <td>{{ $day }}</td>
-                    @for ($i = 1; $i <= 18; $i++)
-                        <td>
-                            @php
-                                // Check for existing attendance record for this day and date
-                                $attendance = $attendanceRecords
-                                                ->where('day', $dayNum)
-                                                ->where('attendance_date', $i)
-                                                ->first();
-                            @endphp
-        
-                            <!-- Check button for present (status = 1) -->
-                            <button class="attendance-btn" 
-                                    data-day="{{ $dayNum }}" 
-                                    data-type="1" 
-                                    data-status="1" 
-                                    data-attendance-date="{{ $i }}" 
-                                    title="Present"
-                                    style="{{ $attendance && $attendance->status === 1 ? 'background-color: green; color: white;' : '' }}">
-                                ✔️
-                            </button>
-        
-                            <!-- Cross button for absent (status = 2) -->
-                            <button class="attendance-btn" 
-                                    data-day="{{ $dayNum }}" 
-                                    data-type="1" 
-                                    data-status="2" 
-                                    data-attendance-date="{{ $i }}" 
-                                    title="Absent"
-                                    style="{{ $attendance && $attendance->status === 2 ? 'background-color: red; color: white;' : '' }}">
-                                ❌
-                            </button>
-                        </td>
-                    @endfor
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-        
-        
-<!-- Laboratory Attendance Table -->
-<h4>Laboratory Attendance</h4>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Days</th>
-            @for ($i = 1; $i <= 18; $i++)
-                <th>{{ $i }}</th>
-            @endfor
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (['Mon' => 1, 'Tue' => 2, 'Wed' => 3, 'Thu' => 4, 'Fri' => 5, 'Sat' => 6] as $day1 => $dayNumLab)
-        <tr>
-            <td>{{ $day1 }}</td>
-            @for ($j = 1; $j <= 18; $j++)
-                <td>
-                    @php
-                        // Check for existing attendance record for laboratory
-                        $attendance_lab = $labAttendanceRecords->Where('day', $dayNumLab)
-                                        ?->firstWhere('attendance_date', $j)
-                    @endphp
+        <!-- Attendance Type Selection Dropdown -->
+        <div class="form-group mb-4">
+            <label for="attendanceType">Select Attendance Type:</label>
+            <select id="attendanceType" class="form-control">
+                <option value="both">Both</option>
+                <option value="lecture">Lecture Only</option>
+                <option value="laboratory">Laboratory Only</option>
+            </select>
+        </div>
 
-                    <!-- Check button for present -->
-                    <button class="attendance-btn" 
-                            data-day="{{ $dayNumLab }}" 
-                            data-type="2" 
-                            data-status="1" 
-                            data-attendance-date="{{ $j }}" 
-                            title="Present"
-                            class="btn btn-success btn-sm"
-                            style="{{ $attendance_lab && $attendance_lab->status === 1 ? 'background-color: green; color: white;' : '' }}">
-                            
-                        ✔️
-                    </button>
+        <!-- Lecture Attendance Table -->
+        <div id="lectureAttendance" class="attendance-table">
+            <h4>Lecture Attendance</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Days</th>
+                        @for ($i = 1; $i <= 18; $i++)
+                            <th>{{ $i }}</th>
+                        @endfor
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (['Mon' => 1, 'Tue' => 2, 'Wed' => 3, 'Thu' => 4, 'Fri' => 5, 'Sat' => 6] as $day => $dayNum)
+                    <tr>
+                        <td>{{ $day }}</td>
+                        @for ($i = 1; $i <= 18; $i++)
+                            <td>
+                                @php
+                                    // Check for existing attendance record for this day and date
+                                    $attendance = $attendanceRecords
+                                                    ->where('day', $dayNum)
+                                                    ->where('attendance_date', $i)
+                                                    ->first();
+                                @endphp
 
-                    <!-- Cross button for absent -->
-                    <button class="attendance-btn" 
-                            data-day="{{ $dayNumLab }}" 
-                            data-type="2" 
-                            data-status="2"  
-                            data-attendance-date="{{ $j }}" 
-                            title="Absent"
-                            class="btn btn-danger btn-sm"
-                            style="{{ $attendance_lab && $attendance_lab->status === 2 ? 'background-color: red; color: white;' : '' }}">
-                            
-                        ❌
-                    </button>
+                                <!-- Check button for present (status = 1) -->
+                                <button class="attendance-btn" 
+                                        data-day="{{ $dayNum }}" 
+                                        data-type="1" 
+                                        data-status="1" 
+                                        data-attendance-date="{{ $i }}" 
+                                        title="Present"
+                                        style="{{ $attendance && $attendance->status === 1 ? 'background-color: green; color: white;' : '' }}">
+                                    ✔️
+                                </button>
 
-                </td>
-            @endfor
-        </tr>
-        @endforeach
-    </tbody>
-</table>
+                                <!-- Cross button for absent (status = 2) -->
+                                <button class="attendance-btn" 
+                                        data-day="{{ $dayNum }}" 
+                                        data-type="1" 
+                                        data-status="2" 
+                                        data-attendance-date="{{ $i }}" 
+                                        title="Absent"
+                                        style="{{ $attendance && $attendance->status === 2 ? 'background-color: red; color: white;' : '' }}">
+                                    ❌
+                                </button>
+                            </td>
+                        @endfor
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Laboratory Attendance Table -->
+        <div id="laboratoryAttendance" class="attendance-table" style="display: none;">
+            <h4>Laboratory Attendance</h4>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Days</th>
+                        @for ($i = 1; $i <= 18; $i++)
+                            <th>{{ $i }}</th>
+                        @endfor
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (['Mon' => 1, 'Tue' => 2, 'Wed' => 3, 'Thu' => 4, 'Fri' => 5, 'Sat' => 6] as $day1 => $dayNumLab)
+                    <tr>
+                        <td>{{ $day1 }}</td>
+                        @for ($j = 1; $j <= 18; $j++)
+                            <td>
+                                @php
+                                    // Check for existing attendance record for laboratory
+                                    $attendance_lab = $labAttendanceRecords->Where('day', $dayNumLab)
+                                                    ?->firstWhere('attendance_date', $j)
+                                @endphp
+
+                                <!-- Check button for present -->
+                                <button class="attendance-btn" 
+                                        data-day="{{ $dayNumLab }}" 
+                                        data-type="2" 
+                                        data-status="1" 
+                                        data-attendance-date="{{ $j }}" 
+                                        title="Present"
+                                        class="btn btn-success btn-sm"
+                                        style="{{ $attendance_lab && $attendance_lab->status === 1 ? 'background-color: green; color: white;' : '' }}">
+                                            
+                                    ✔️
+                                </button>
+
+                                <!-- Cross button for absent -->
+                                <button class="attendance-btn" 
+                                        data-day="{{ $dayNumLab }}" 
+                                        data-type="2" 
+                                        data-status="2"  
+                                        data-attendance-date="{{ $j }}" 
+                                        title="Absent"
+                                        class="btn btn-danger btn-sm"
+                                        style="{{ $attendance_lab && $attendance_lab->status === 2 ? 'background-color: red; color: white;' : '' }}">
+                                            
+                                    ❌
+                                </button>
+
+                            </td>
+                        @endfor
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
     @endif
+
     <!-- Navigation Arrows -->
     <div class="row mt-4 text-center">
         <div class="col">
@@ -159,53 +174,70 @@
         </div>
     </div>
 </div>
-{{-- <script src="{{ asset('js/attendance.js') }}"></script>
- --}}
- <script>
+
+<script>
     // Pass PHP variables into JavaScript
     const studentId = {{ $student->id }};
     const subjectId = {{ $student->subject_id }};
     const sectionId = {{ $student->section_id }};
-</script>
+
+    // JavaScript to handle the dropdown change event
+    document.getElementById('attendanceType').addEventListener('change', function() {
+        const selectedType = this.value;
         
+        // Hide all attendance tables initially
+        document.querySelectorAll('.attendance-table').forEach(table => {
+            table.style.display = 'none';
+        });
+        
+        // Show the selected attendance table(s)
+        if (selectedType === 'lecture') {
+            document.getElementById('lectureAttendance').style.display = 'block';
+        } else if (selectedType === 'laboratory') {
+            document.getElementById('laboratoryAttendance').style.display = 'block';
+        } else {
+            document.getElementById('lectureAttendance').style.display = 'block';
+            document.getElementById('laboratoryAttendance').style.display = 'block';
+        }
+    });
+    
+    // Trigger change event on page load to set the default view
+    document.getElementById('attendanceType').dispatchEvent(new Event('change'));
+</script>
+
 <script>
     document.querySelectorAll('.attendance-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        const day = this.getAttribute('data-day');
-        const type = this.getAttribute('data-type');
-        const status = this.getAttribute('data-status'); // 1 = Present, 2 = Absent
-        const date = this.getAttribute('data-attendance-date'); // Get the attendance date
+        button.addEventListener('click', function() {
+            const day = this.getAttribute('data-day');
+            const type = this.getAttribute('data-type');
+            const status = this.getAttribute('data-status'); // 1 = Present, 2 = Absent
+            const date = this.getAttribute('data-attendance-date'); // Get the attendance date
 
-        fetch('{{ route('attendance.store') }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({
-                student_id: studentId,  // Use the JS variable passed from PHP
-                subject_id: subjectId,  // Use the JS variable passed from PHP
-                section_id: sectionId,  // Use the JS variable passed from PHP
-                day: day,
-                attendance_date: parseInt(date), // Pass the tiny integer date
-                type: type,
-                status: status
+            fetch('{{ route('attendance.store') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    student_id: studentId,  // Use the JS variable passed from PHP
+                    subject_id: subjectId,  // Use the JS variable passed from PHP
+                    section_id: sectionId,  // Use the JS variable passed from PHP
+                    day: day,
+                    type: type,
+                    status: status,
+                    date: date
+                })
             })
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json(); // Parse JSON response
-        })
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            }
-        })
-        .catch(error => console.error('Error:', error));
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // Handle success response
+                location.reload(); // Reload the page to see the updated attendance
+            })
+            .catch(error => {
+                console.error('Error:', error); // Handle error response
+            });
+        });
     });
-});
-
 </script>
 @endsection

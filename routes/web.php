@@ -76,6 +76,10 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/students/{student}', [StudentController::class, 'update'])->name('students.update');
     route::post('/students/upload-csv', [StudentController::class, 'uploadCSV'])->name('students.uploadCSV');});
     Route::delete('/students/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
+    // Route::put('/shuffle', [StudentController::class, 'shuffleStudent'])->name('students.shuffle');
+    Route::match(['get', 'post'], '/shuffle', [StudentController::class, 'shuffleStudent'])->name('students.shuffle');
+    Route::match(['get', 'post'], '/group-shuffle', [StudentController::class, 'groupShuffle'])->name('students.group.shuffle');
+
 
     Route::get('export-students', function () {
         $teacherId = auth()->user()->id;

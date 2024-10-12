@@ -203,7 +203,87 @@ class StudentController extends Controller
         }
     }
 
-        
+    public function shuffleStudent(Request $request)
+    {
+        // Get the authenticated teacher ID
+        $teacherId = auth()->user()->id;
+
+        // Fetch sections and subjects for the dropdowns
+        $sections = Section::where('user_id', $teacherId)->get();
+        $subjects = Subject::where('user_id', $teacherId)->get();
+
+        // Check if the request is a POST (form submission)
+        if ($request->isMethod('post')) {
+            $subjectId = $request->input('subject_id');
+            $sectionId = $request->input('section_id');
+
+            // Fetch students based on the selected subject and section
+            $students = Student::where('user_id', $teacherId)
+                ->when($subjectId, function ($query) use ($subjectId) {
+                    return $query->where('subject_id', $subjectId);
+                })
+                ->when($sectionId, function ($query) use ($sectionId) {
+                    return $query->where('section_id', $sectionId);
+                })
+                ->get();
+
+            // Shuffle the students
+            $shuffledStudents = $students->shuffle();
+
+            // Return the view with the shuffled students and form options
+            return view('student.shuffle_student', compact('sections', 'subjects', 'shuffledStudents'));
+        }
+
+        // If not a POST request, just show the form
+        return view('student.shuffle_student', compact('sections', 'subjects'));
+    }
+
+    public function groupShuffle(Request $request)
+    {
+        // Get the authenticated teacher ID
+        $teacherId = auth()->user()->id;
+
+        // Fetch sections and subjects for the dropdowns
+        $sections = Section::where('user_id', $teacherId)->get();
+        $subjects = Subject::where('user_id', $teacherId)->get();
+
+        // Check if the request is a POST (form submission)
+        if ($request->isMethod('post')) {
+            $subjectId = $request->input('subject_id');
+            $sectionId = $request->input('section_id');
+            $studentsPerGroup = $request->input('students_per_group');
+
+            // Fetch students based on the selected subject and section
+            $students = Student::where('user_id', $teacherId)
+                ->when($subjectId, function ($query) use ($subjectId) {
+                    return $query->where('subject_id', $subjectId);
+                })
+                ->when($sectionId, function ($query) use ($sectionId) {
+                    return $query->where('section_id', $sectionId);
+                })
+                ->get();
+
+            // Shuffle the students
+            $shuffledStudents = $students->shuffle();
+
+            // Create groups
+            $groups = [];
+            foreach ($shuffledStudents as $index => $student) {
+                $groupIndex = floor($index / $studentsPerGroup); // Determine the group index
+                if (!isset($groups[$groupIndex])) {
+                    $groups[$groupIndex] = [];
+                }
+                $groups[$groupIndex][] = $student; // Add the student to the corresponding group
+            }
+
+            // Return the view with the groups and form options
+            return view('student.group_shuffle', compact('sections', 'subjects', 'groups'));
+        }
+
+        // If not a POST request, just show the form
+        return view('student.group_shuffle', compact('sections', 'subjects'));
+    }
+
 
 
 }
