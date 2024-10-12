@@ -40,6 +40,7 @@ class StudentsImport implements ToCollection, WithHeadingRow
                 'section_id' => $this->sectionId,
                 'subject_id' => $this->subjectId,
                 'user_id' => $this->userId,
+                'student_type' => $row['student_type'], // Add student_type
             ]);
 
             // Create ClassCard for the student with only essential fields
@@ -50,5 +51,4 @@ class StudentsImport implements ToCollection, WithHeadingRow
             ]);
         }
     }
-
 }

@@ -20,6 +20,7 @@ class Student extends Model
         'user_id',
         'section_id',
         'subject_id',
+        'student_type'
     ];
     
     public $timestamps = true;

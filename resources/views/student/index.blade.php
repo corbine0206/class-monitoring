@@ -65,6 +65,7 @@
                                     <th>Gender</th>
                                     <th>Date of Birth</th>
                                     <th>Course</th>
+                                    <th>Student type</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -76,6 +77,7 @@
                                         <td>{{ $student->gender }}</td>
                                         <td>{{ $student->date_of_birth }}</td>
                                         <td>{{ $student->course }}</td>
+                                        <td>{{ $student->student_type }}</td>
                                         <td>
                                             <!-- Edit Button -->
                                             <button type="button" class="btn btn-sm btn-primary" onclick="showEditModal({{ $student }})">
@@ -161,12 +163,23 @@
                             </select>
                         </div>
 
+                        <!-- Student Type Dropdown -->
+                        <div class="mb-3">
+                            <label for="student_type" class="form-label">Student Type</label>
+                            <select class="form-select" id="student_type" name="student_type" required>
+                                <option value="">Select Student Type</option>
+                                <option value="regular">Regular</option>
+                                <option value="irregular">Irregular</option>
+                            </select>
+                        </div>
+
                         <button type="submit" class="btn btn-primary">Create</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
 
 
     <!-- Edit Student Modal -->
@@ -233,12 +246,23 @@
                             </select>
                         </div>
 
+                        <!-- Student Type Dropdown -->
+                        <div class="mb-3">
+                            <label for="edit_student_type" class="form-label">Student Type</label>
+                            <select class="form-select" id="edit_student_type" name="student_type" required>
+                                <option value="">Select Student Type</option>
+                                <option value="regular">Regular</option>
+                                <option value="irregular">Irregular</option>
+                            </select>
+                        </div>
+
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
 
 
     <!-- Delete Student Modal -->

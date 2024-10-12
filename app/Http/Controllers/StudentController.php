@@ -75,6 +75,7 @@ class StudentController extends Controller
             'course' => 'required|string|max:255',
             'section_id' => 'required|exists:sections,id',
             'subject_id' => 'required|exists:subjects,id',
+            'student_type' => 'nullable|in:regular,irregular', // Add validation for student_type
         ]);
 
         // Create the student
@@ -89,6 +90,7 @@ class StudentController extends Controller
             'section_id' => $request->section_id,
             'subject_id' => $request->subject_id,
             'user_id' => Auth::id(),
+            'student_type' => $request->student_type, // Add student_type to the create method
         ]);
 
         // Create a ClassCard for the newly created student
@@ -100,6 +102,7 @@ class StudentController extends Controller
 
         return redirect()->route('students.index')->with('success', 'Student created successfully.');
     }
+
 
     /**
      * Display the specified resource.
@@ -122,6 +125,7 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
+        // Validate the incoming request
         $request->validate([
             'student_number' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
@@ -132,12 +136,15 @@ class StudentController extends Controller
             'course' => 'required|string|max:255',
             'section_id' => 'required|exists:sections,id', // Validate section exists
             'subject_id' => 'required|exists:subjects,id', // Validate subject exists
+            'student_type' => 'nullable|in:regular,irregular', // Add validation for student_type
         ]);
 
+        // Check if the authenticated user is authorized to update the student
         if ($student->user_id !== Auth::id()) {
             return redirect()->route('students.index')->with('error', 'You are not authorized to update this student.');
         }
 
+        // Update the student with the request data
         $student->update([
             'student_number' => $request->student_number,
             'first_name' => $request->first_name,
@@ -148,10 +155,12 @@ class StudentController extends Controller
             'course' => $request->course,
             'section_id' => $request->section_id, // Update section
             'subject_id' => $request->subject_id, // Update subject
+            'student_type' => $request->student_type, // Update student_type
         ]);
 
         return redirect()->route('students.index')->with('success', 'Student updated successfully.');
     }
+
 
     
     /**
@@ -177,6 +186,21 @@ class StudentController extends Controller
             'subject_id' => 'required|exists:subjects,id',
         ]);
 
+        // Additional validation for student_type
+        $csvData = file($request->file('csv_file')->getRealPath());
+        $header = str_getcsv(array_shift($csvData)); // Get the header row
+        $validStudentTypes = ['regular', 'irregular'];
+
+        foreach ($csvData as $line) {
+            $row = str_getcsv($line);
+            $studentData = array_combine($header, $row);
+            
+            // Validate student_type
+            if (!in_array($studentData['student_type'], $validStudentTypes)) {
+                return redirect()->route('students.index')->with('error', 'Invalid student type in CSV. Allowed values are: ' . implode(', ', $validStudentTypes));
+            }
+        }
+
         // Log a message to confirm that the file upload passed validation
         Log::info('CSV file upload request validated successfully.');
 
@@ -190,7 +214,7 @@ class StudentController extends Controller
 
             // Log the success message after a successful import
             Log::info('CSV file processed successfully.');
-            
+
             // Redirect back to the students index page with a success message
             return redirect()->route('students.index')->with('success', 'CSV uploaded and students imported successfully.');
 
@@ -202,6 +226,7 @@ class StudentController extends Controller
             return redirect()->route('students.index')->with('error', 'An error occurred while uploading the CSV. Please try again.');
         }
     }
+
 
     public function shuffleStudent(Request $request)
     {
@@ -283,7 +308,5 @@ class StudentController extends Controller
         // If not a POST request, just show the form
         return view('student.group_shuffle', compact('sections', 'subjects'));
     }
-
-
 
 }
